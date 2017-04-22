@@ -6,10 +6,12 @@ This repository contains implementation of our ride sharing algorithm, which is 
 <p>We aim to minimize the total ridesharing travelling time of passengers, the total travel distance and travel time for vehicles.</p>
 
 <p>We have following assumptions for our model:
-No passenger will walk.
-We will consider the distances along the road network using Graph hopper API.
-We’ll consider the maximum capacity of a vehicle as 4.
-We are not considering the traffic conditions.
-The maximum waiting time of each trip is 5 minutes.
-The delay for every passenger is assumed to be 20% of total travel time if ride is individual.
+<ul>
+<li>No passenger will walk.</li>
+<li>We will consider the distances along the road network using Graph hopper API.</li>
+<li>We’ll consider the maximum capacity of a vehicle as 4.</li>
+<li>We are not considering the traffic conditions.</li>
+<li>The maximum waiting time of each trip is 5 minutes.</li>
+<li>The delay for every passenger is assumed to be 20% of total travel time if ride is individual.</li>
+</ul>
 </p>
