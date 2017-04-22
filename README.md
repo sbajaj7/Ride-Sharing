@@ -17,10 +17,12 @@ This repository contains implementation of our ride sharing algorithm, which is 
 </p>
 
 <p>
-The problem is solved via four steps: 
+The problem is solved via four steps:
+<ul>
 <li>Computing a pairwise request-vehicle shareability graph (RV-graph).</li>
 <li>Computing a graph of feasible trips and the vehicles that can serve    them (RTV-graph).</li>
 <li>Assignment of vehicles to trips.</li>
 <li>We are not considering the traffic conditions.</li>
 <li>Rebalancing the remaining idle vehicles.</li>
+</ul>
 </p>
