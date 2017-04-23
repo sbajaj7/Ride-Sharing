@@ -12,18 +12,20 @@ import org.apache.http.client.ClientProtocolException;
  */
 public class MainClass 
 {
-    public static void main( String[] args ) throws SQLException, ClientProtocolException, IOException
-    {
-        System.out.println( "This is me signing in!" );
-        System.out.println( "Hii" );
-        
-//        System.out.println(new Date().toString());
-//        DbConnector db_obj=new DbConnector();
-//        db_obj.getTripsPerInterval();
-//        System.out.println(new Date().toString());
-        
-        ApiAdapter gh_obj=new ApiAdapter();
-        gh_obj.method();
+	public static void main( String[] args ) throws SQLException, ClientProtocolException, IOException
+	{
 
-    }
+		System.out.println( "This is me signing in!" );
+
+		System.out.println(new Date().toString());
+
+		        DbConnector db_obj=new DbConnector();
+		        db_obj.getTripsPerInterval();
+
+//		ApiAdapter gh_obj=new ApiAdapter();
+//		gh_obj.method();
+
+		System.out.println(new Date().toString());
+
+	}
 }

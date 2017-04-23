@@ -41,7 +41,8 @@ public class DbConnector {
 	}
 	public void getTripsPerInterval() throws SQLException{
 
-		rs = stmt.executeQuery("select *  from nytrips_firstweek_manhattan"+
+		rs = stmt.executeQuery("select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude"+
+		"  from nytrips_firstweek_manhattan"+
 				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
 				" and pickup_datetime < \"2013-01-01 09:02:00\"");
 		ResultSetMetaData rsmd = rs.getMetaData();
