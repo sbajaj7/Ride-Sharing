@@ -46,7 +46,8 @@ public class DbConnector {
 		rs = stmt.executeQuery("select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude"+
 				"  from nytrips_firstweek_manhattan"+
 				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
-				" and pickup_datetime < \"2013-01-01 09:01:00\"");// limit 5");
+				" and pickup_datetime < \"2013-01-01 09:01:00\""//); 
+		+"limit 5");
 		ResultSetMetaData rsmd = rs.getMetaData();
 		ArrayList<ArrayList<String>> trips_interval = new ArrayList<ArrayList<String>>();
 		int columnNumber=rsmd.getColumnCount();

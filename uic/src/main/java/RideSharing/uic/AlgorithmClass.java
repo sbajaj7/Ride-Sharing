@@ -1,5 +1,6 @@
 package RideSharing.uic;
 
+import java.awt.List;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class AlgorithmClass {
 			JSONObject elementObject =(JSONObject)secObject.getJSONArray("elements").get(i);
 			JSONObject durationObject=null;
 			try{
-			 durationObject =(JSONObject)elementObject.get("duration_in_traffic");
+				durationObject =(JSONObject)elementObject.get("duration_in_traffic");
 			}
 			catch(Exception e){
 				durationObject =(JSONObject)elementObject.get("duration");
@@ -87,17 +88,17 @@ public class AlgorithmClass {
 
 	public void RVGraphPart2(ArrayList<String> user_points) throws ClientProtocolException, IOException, InterruptedException{
 
-		rv_request_vehicle_matrix= new int[user_points.size()/2][vehicle_count];
-		//rv_request_vehicle_matrix size is x-axis-100, y-axis-59
+		rv_request_vehicle_matrix= new int[vehicle_count][user_points.size()/2];
+		//rv_request_vehicle_matrix size is y-axis-100(vehicle), x-axis-59(user)
 		ArrayList<String> vehicle_req_json=apiAdapter_obj.GoogleMapsMatrixAPI_vehicle_req(vehicleLocations, user_points);
 
-//		System.out.println("vehicle_req_json.size() "+vehicle_req_json.size());
-//		System.out.println("user_points.size() "+user_points.size());
+		//		System.out.println("vehicle_req_json.size() "+vehicle_req_json.size());
+		//		System.out.println("user_points.size() "+user_points.size());
 		//
 		for (int i = 0; i < vehicle_req_json.size(); i++) {
 			//59 times, 59 json, from each user as source to 100 vehicle locations as destinations	
 
-//			System.out.println(vehicle_req_json.get(i));
+			//			System.out.println(vehicle_req_json.get(i));
 			//			break;
 
 			JSONObject json_obj = new JSONObject(vehicle_req_json.get(i));
@@ -117,44 +118,79 @@ public class AlgorithmClass {
 				//
 				if(time<=20)
 				{
-					rv_request_vehicle_matrix[i][j]=time;
+					rv_request_vehicle_matrix[j][i]=time;
 					count++;
 				}
-				else rv_request_vehicle_matrix[i][j]=0;
+				else rv_request_vehicle_matrix[j][i]=0;
 
 				//        System.out.println(json_obj.get("rows"));
 			}
 
 
 		}
-//		for (int i = 0; i < rv_request_vehicle_matrix.length; i++) {
-//			System.out.println();
-//			for (int j = 0; j < rv_request_vehicle_matrix[0].length; j++) {
-//				System.out.print(rv_request_vehicle_matrix[i][j]+" ");	
-//			}
-//		}
 
-		
 	}
 
 
 
 	public void RTVGraph(){
+
+
+		//				for (int i = 0; i < rv_request_vehicle_matrix.length; i++) {
+		//				System.out.println();
+		//				for (int j = 0; j < rv_request_vehicle_matrix[0].length; j++) {
+		//					System.out.print(rv_request_vehicle_matrix[i][j]+" ");	
+		//				}
+		//			}
+		//
+		//
+		//				
+		//				for (int i = 0; i < rv_requests_matrix.length; i++) {
+		//					System.out.println();
+		//					for (int j = 0; j < rv_requests_matrix[0].length; j++) {
+		//						System.out.print(rv_requests_matrix[i][j]+" ");	
+		//					}
+		//				}
+
+
+		ArrayList<String> possible_trips_for_every_vehicle=new ArrayList<String>();
 		for (int i = 0; i < rv_request_vehicle_matrix.length; i++) {
+			possible_trips_for_every_vehicle.add("");
+			
+			//each vehicle
 			System.out.println();
-			for (int j = 0; j < rv_request_vehicle_matrix[0].length; j++) {
-				System.out.print(rv_request_vehicle_matrix[i][j]+" ");	
+
+
+					for(int user1=0;user1<rv_request_vehicle_matrix[0].length;user1++)
+					{
+						if(rv_request_vehicle_matrix[i][user1]!=0 )
+						{
+						for (int user2 = 0; user2 < rv_requests_matrix.length; user2++) {
+
+							System.out.print("Vehicle:"+i+",User1:"+user1+","+",User2:"+user2+";");
+							System.out.println(rv_requests_matrix[user1][user2]);
+						}
+					}
+
+					//					if(possible_trips_for_every_vehicle.get(i).equals(""))
+					//					{
+					//						possible_trips_for_every_vehicle.set(i,"vehicle"+i+"user"+j);	
+					//					}
+					//					else
+					//					{
+					//						possible_trips_for_every_vehicle.set(i,
+					//								possible_trips_for_every_vehicle.get(i)+";vehicle"+i+"user"+j);	
+					//					}
+				}
+
 			}
+//			System.out.println(possible_trips_for_every_vehicle.get(i));
+
 		}
-		
-		
-		for (int i = 0; i < rv_requests_matrix.length; i++) {
-			System.out.println();
-			for (int j = 0; j < rv_requests_matrix[0].length; j++) {
-				System.out.print(rv_requests_matrix[i][j]+" ");	
-			}
-		}
-	}
+
+
+
+	
 
 
 
