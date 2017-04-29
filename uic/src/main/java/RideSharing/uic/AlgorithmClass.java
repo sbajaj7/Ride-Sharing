@@ -71,13 +71,13 @@ public class AlgorithmClass {
 
 			System.out.println("time "+time);
 			if(i==index)
-				rv_requests_matrix[index][i]=0;	
+				rv_requests_matrix[index][i]=-1;	
 			else if(time<=20)
 			{
 				rv_requests_matrix[index][i]=time;
 				count++;
 			}
-			else rv_requests_matrix[index][i]=0;
+			else rv_requests_matrix[index][i]=-1;
 
 			//        System.out.println(json_obj.get("rows"));
 		}
@@ -121,7 +121,7 @@ public class AlgorithmClass {
 					rv_request_vehicle_matrix[j][i]=time;
 					count++;
 				}
-				else rv_request_vehicle_matrix[j][i]=0;
+				else rv_request_vehicle_matrix[j][i]=-1;
 
 				//        System.out.println(json_obj.get("rows"));
 			}
@@ -163,12 +163,15 @@ public class AlgorithmClass {
 
 					for(int user1=0;user1<rv_request_vehicle_matrix[0].length;user1++)
 					{
-						if(rv_request_vehicle_matrix[i][user1]!=0 )
+						if(rv_request_vehicle_matrix[i][user1]>=0 )
 						{
 						for (int user2 = 0; user2 < rv_requests_matrix.length; user2++) {
 
-							System.out.print("Vehicle:"+i+",User1:"+user1+","+",User2:"+user2+";");
+							if(user1!=user2 &&rv_requests_matrix[user1][user2]>=0&&(( rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2])
+									<=20))
+							{System.out.print("Vehicle:"+i+",User1:"+user1+",User2:"+user2+";");
 							System.out.println(rv_requests_matrix[user1][user2]);
+						}
 						}
 					}
 
