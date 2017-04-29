@@ -43,7 +43,7 @@ public class DbConnector {
 	public ArrayList<ArrayList<String>> getTripsPerInterval() throws SQLException{
 
 
-		rs = stmt.executeQuery("select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude"+
+		rs = stmt.executeQuery("select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude,medallion"+
 				"  from nytrips_firstweek_manhattan"+
 				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
 				" and pickup_datetime < \"2013-01-01 09:01:00\""//); 

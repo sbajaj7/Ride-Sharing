@@ -19,7 +19,8 @@ public class ApiAdapter {
 	HttpResponse httpResponse;
 	HttpEntity entity ;
 	ArrayList<String> vehicle_req_json=new ArrayList<String>();
-	public void RoutingAPI(String point1_lat,String point1_long,String point2_lat,String point2_long) throws ClientProtocolException, IOException{
+	
+	public String RoutingAPI(String point1_lat,String point1_long,String point2_lat,String point2_long) throws ClientProtocolException, IOException{
 		request = new HttpGet( "https://graphhopper.com/api/1/route?point="+
 				point1_lat+"%2C"+point1_long+ "&point="+
 				point2_lat+"%2C"+point2_long+"&vehicle=car&locale=en&key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d&calc_points=false"  );		
@@ -27,7 +28,10 @@ public class ApiAdapter {
 		httpResponse = HttpClientBuilder.create().build().execute( request );
 		entity = httpResponse.getEntity();
 
-		System.out.println(EntityUtils.toString(entity));
+		String json=EntityUtils.toString(entity);
+
+		System.out.println(json);
+		return json;
 	}
 
 
@@ -97,17 +101,36 @@ public class ApiAdapter {
 		//		
 		//				System.out.println(EntityUtils.toString(entity));
 	}
+	
+	
+	public String GoogleMaps_single_source_single_dest(String point1_lat,String point1_long,String point2_lat,String point2_long) throws ClientProtocolException, IOException{
 
-	public void GoogleMapsMatrixAPI_req(ArrayList<String> points) throws ClientProtocolException, IOException, InterruptedException{
+		https://maps.googleapis.com/maps/api/directions/json?origin=40.779613%2C-73.955498&destination=40.741043%2C-73.988235&departure_time=1498374182&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4
 
-		AlgorithmClass algorithmClass_obj=new AlgorithmClass(points.size()/2);
+		
+		request = new HttpGet( "https://maps.googleapis.com/maps/api/directions/json?origin="+
+				point1_lat+"%2C"+point1_long+ "&destination="+
+				point2_lat+"%2C"+point2_long+"&departure_time=1498374182&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4"  );		
+
+		httpResponse = HttpClientBuilder.create().build().execute( request );
+		entity = httpResponse.getEntity();
+
+		String json=EntityUtils.toString(entity);
+
+//		System.out.println(json);
+		return json;
+	}
+
+	public void GoogleMapsMatrixAPI_req(ArrayList<String> source_points) throws ClientProtocolException, IOException, InterruptedException{
+
+		AlgorithmClass algorithmClass_obj=new AlgorithmClass(source_points.size()/2);
 
 
-		System.out.println(points.size());
+		System.out.println(source_points.size());
 		String all_points="";
-		for (int i = 0; i < points.size(); i=i+2) {
-			all_points+=points.get(i)+"%2C";
-			all_points+=points.get(i+1)+"%7C";
+		for (int i = 0; i < source_points.size(); i=i+2) {
+			all_points+=source_points.get(i)+"%2C";
+			all_points+=source_points.get(i+1)+"%7C";
 
 
 
@@ -115,12 +138,13 @@ public class ApiAdapter {
 		all_points=all_points.substring(0,all_points.length()-3);
 
 
-		for (int i = 0; i < points.size(); i=i+2) {
+		for (int i = 0; i < source_points.size(); i=i+2) {
+			//from one user to all users
 			String api_request="https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
 
 			//origin
-			api_request+=points.get(i)+"%2C";
-			api_request+=points.get(i+1)+"&destinations=";
+			api_request+=source_points.get(i)+"%2C";
+			api_request+=source_points.get(i+1)+"&destinations=";
 
 			//destination
 			api_request+=all_points;
