@@ -39,10 +39,10 @@ public class MainClass
 			source_points.add(trips_interval.get(i).get(2));
 			destination_points.add(trips_interval.get(i).get(5).replaceAll("\\s", "").replaceAll("\\n", ""));
 			destination_points.add(trips_interval.get(i).get(4));
-//			System.out.println("Printing trips");
+			//			System.out.println("Printing trips");
 
-//			System.out.println("\""+trips_interval.get(i).get(5).replaceAll("\\s", "").replaceAll("\\n", "")+"\"");
-//			System.out.println("\""+trips_interval.get(i).get(4)+"\"");
+			//			System.out.println("\""+trips_interval.get(i).get(5).replaceAll("\\s", "").replaceAll("\\n", "")+"\"");
+			//			System.out.println("\""+trips_interval.get(i).get(4)+"\"");
 
 			//latitude=3,longitude=2 //indexes of trips_interval.get(i)
 		}
@@ -58,13 +58,14 @@ public class MainClass
 		//		
 
 		algorithm_obj.user_individual_time(source_points,destination_points);
-				gh_obj.GoogleMapsMatrixAPI_req(source_points);
-		
-				        algorithm_obj.RVGraphPart2(source_points);
-		
-				        algorithm_obj.RTVGraph();
-		
-				        System.out.println(new Date().toString());
+		gh_obj.GoogleMapsMatrixAPI_req(source_points);
+
+		algorithm_obj.RVGraphPart2(source_points);
+
+		algorithm_obj.RTVGraph();
+		algorithm_obj.find_optimal_assignment();
+		System.out.println(new Date().toString());
+
 
 	}
 }

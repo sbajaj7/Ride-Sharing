@@ -1,10 +1,13 @@
 package RideSharing.uic;
 
 import java.awt.List;
+import java.util.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.apache.http.client.ClientProtocolException;
 import  org.json.*;
@@ -13,7 +16,9 @@ public class AlgorithmClass {
 	static int[][] rv_requests_matrix;
 	static int[][] rv_request_vehicle_matrix;
 	static int[] requests_individual_ride_time;
-	static HashMap<String, Integer> rtv_trips;
+	static Map<String, Integer> rtv_trips;
+	static Map<String, Integer> sorted_rtv_trips;
+
 	int index=0;
 	int count=0;
 	int vehicle_count=100;
@@ -57,10 +62,10 @@ public class AlgorithmClass {
 		requests_individual_ride_time=new int[source_points.size()/2];
 
 		for (int i = 0; i < source_points.size(); i=i+2) {
-	
+
 			json=apiAdapter_obj.GoogleMaps_single_source_single_dest(source_points.get(i),source_points.get(i+1),
 					destination_points.get(i),destination_points.get(i+1));
-			
+
 			System.out.println(source_points.get(i)+" "+source_points.get(i+1)+" "+
 					destination_points.get(i)+" "+destination_points.get(i+1));
 			System.out.println(json);
@@ -78,10 +83,10 @@ public class AlgorithmClass {
 			int time=Integer.parseInt(((String) durationObject.get("text")).replaceAll("[\\D]", ""));
 			requests_individual_ride_time[i/2]=time;
 		}
-//		for (int i = 0; i < requests_individual_ride_time.length; i++) {
-//			System.out.println(requests_individual_ride_time[i]);
-//			
-//		}
+		//		for (int i = 0; i < requests_individual_ride_time.length; i++) {
+		//			System.out.println(requests_individual_ride_time[i]);
+		//			
+		//		}
 	}
 
 	public void RVGraphPart1(String distanceJson){
@@ -200,7 +205,7 @@ public class AlgorithmClass {
 		//					}
 		//				}
 
-
+		rtv_trips = new HashMap();
 		ArrayList<String> possible_trips_for_every_vehicle=new ArrayList<String>();
 		for (int i = 0; i < rv_request_vehicle_matrix.length; i++) {
 			possible_trips_for_every_vehicle.add("");
@@ -219,13 +224,20 @@ public class AlgorithmClass {
 								<=20))
 						{
 
+							rtv_trips.put("Vehicle:"+i+",User1:"+user1+",User2:"+user2, (rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2]));
+
 							if(possible_trips_for_every_vehicle.get(i).equals(""))
-								possible_trips_for_every_vehicle.set(i,"Vehicle:"+i+",User1:"+user1+",User2:"+user2);	
+							{
+								possible_trips_for_every_vehicle.set(i,"Vehicle:"+i+",User1:"+user1+",User2:"+user2
+										+"("+(rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2])+" mins)");	
+							
+							}
 							else
-
+							{
 								possible_trips_for_every_vehicle.set(i,
-										possible_trips_for_every_vehicle.get(i)+";Vehicle:"+i+",User1:"+user1+",User2:"+user2);
-
+										possible_trips_for_every_vehicle.get(i)+";Vehicle:"+i+",User1:"+user1+",User2:"+user2
+										+"("+(rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2])+" mins)");
+							}
 							//							System.out.print("Vehicle:"+i+",User1:"+user1+",User2:"+user2+";");
 							//							System.out.println(rv_requests_matrix[user1][user2]);
 						}
@@ -242,14 +254,40 @@ public class AlgorithmClass {
 				//								possible_trips_for_every_vehicle.get(i)+";vehicle"+i+"user"+j);	
 				//					}
 			}
-			System.out.println(possible_trips_for_every_vehicle.get(i));
+//			System.out.println(possible_trips_for_every_vehicle.get(i));
 		}
+		
+		
+//		Iterator iterator = rtv_trips.keySet().iterator();
+//		  
+//		while (iterator.hasNext()) {
+//		   String key = iterator.next().toString();
+//		   String value = rtv_trips.get(key).toString();
+//		  
+//		   System.out.println(key + " " + value);
+//		}
 		//			System.out.println(possible_trips_for_every_vehicle.get(i));
 
 	}
 
 
-
+	public void find_optimal_assignment(){
+		System.out.println("find_optimal_assignment");
+		sorted_rtv_trips=MapUtil.sortByValue( rtv_trips )	;	
+		
+		Iterator iterator = sorted_rtv_trips.keySet().iterator();
+		  
+		while (iterator.hasNext()) {
+		   String key = iterator.next().toString();
+		   String value = sorted_rtv_trips.get(key).toString();
+		  
+		   System.out.println(key + " " + value);
+		}
+	
+	
+	
+	
+	}
 
 
 
@@ -266,4 +304,8 @@ public class AlgorithmClass {
 		System.out.println(count);
 
 	}
+
+
+
 }
+
