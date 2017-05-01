@@ -1,0 +1,446 @@
+Database steps:
+
+
+1. Extract all files using python script.
+
+2. Create database and then table for trips data:
+create table nydata_trips(medallion int(11), hack_license int(11), vendor_id varchar(11), rate_code int(5) , store_and_fwd_flag varchar(2) , pickup_datetime datetime, dropoff_datetime datetime, passenger_count int(5), trip_time_in_mins varchar(20), trip_distance DECIMAL(6,4), pickup_longitude varchar(15), pickup_latitude varchar(15), dropoff_longitude varchar(15), dropoff_latitude varchar(15));
+
+
+3. Load data from trip_data csv files:
+LOAD DATA 
+LOCAL INFILE 'E:/UIC/courses/Spring 2017/581 DBMS/Dataset/extracted_dataset/FOIL2013/trip_data_4.csv'
+INTO TABLE test.nydata_trips 
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' 
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+analysis:
+
+select pickup_datetime as date, count(medallion) from sample_nydata_trips GROUP BY pickup_datetime order by pickup_datetime ;
+
+2013-01-02 17:20:00 ~ > 150 rows
+2013-01-02 17:20:any other ~<10 rows
+
+mysql> select cast(pickup_datetime as date), count(medallion) from nydata_trips GROUP BY CAST(pickup_datetime AS DATE)  order by pickup_datetime;
++-------------------------------+------------------+
+| cast(pickup_datetime as date) | count(medallion) |
++-------------------------------+------------------+
+| 2013-01-01                    |           412630 |
+| 2013-01-02                    |           393001 |
+| 2013-01-03                    |           441233 |
+| 2013-01-04                    |           478437 |
+| 2013-01-05                    |           473804 |
+| 2013-01-06                    |           403667 |
+| 2013-01-07                    |           407363 |
+| 2013-01-08                    |           441778 |
+| 2013-01-09                    |           457471 |
+| 2013-01-10                    |           487949 |
+| 2013-01-11                    |           521398 |
+| 2013-01-12                    |           507429 |
+| 2013-01-13                    |           442541 |
+| 2013-01-14                    |           443650 |
+| 2013-01-15                    |           496899 |
+| 2013-01-16                    |           500065 |
+| 2013-01-17                    |           512533 |
+| 2013-01-18                    |           543734 |
+| 2013-01-19                    |           510530 |
+| 2013-01-20                    |           459393 |
+| 2013-01-21                    |           384614 |
+| 2013-01-22                    |           496005 |
+| 2013-01-23                    |           520520 |
+| 2013-01-24                    |           533039 |
+| 2013-01-25                    |           537188 |
+| 2013-01-26                    |           557203 |
+| 2013-01-27                    |           470833 |
+| 2013-01-28                    |           450789 |
+| 2013-01-29                    |           477380 |
+| 2013-01-30                    |           482378 |
+| 2013-01-31                    |           531161 |
+| 2013-02-01                    |           567076 |
+| 2013-02-02                    |           569777 |
+| 2013-02-03                    |           472623 |
+| 2013-02-04                    |           457093 |
+| 2013-02-05                    |           482637 |
+| 2013-02-06                    |           506443 |
+| 2013-02-07                    |           535105 |
+| 2013-02-08                    |           432643 |
+| 2013-02-09                    |           392006 |
+| 2013-02-10                    |           459612 |
+| 2013-02-11                    |           458947 |
+| 2013-02-12                    |           503963 |
+| 2013-02-13                    |           524250 |
+| 2013-02-14                    |           527476 |
+| 2013-02-15                    |           537129 |
+| 2013-02-16                    |           542291 |
+| 2013-02-17                    |           506209 |
+| 2013-02-18                    |           407104 |
+| 2013-02-19                    |           456383 |
+| 2013-02-20                    |           512507 |
+| 2013-02-21                    |           538079 |
+| 2013-02-22                    |           558738 |
+| 2013-02-23                    |           584812 |
+| 2013-02-24                    |           474783 |
+| 2013-02-25                    |           451955 |
+| 2013-02-26                    |           496612 |
+| 2013-02-27                    |           509033 |
+| 2013-02-28                    |           524890 |
+| 2013-03-01                    |           564492 |
+| 2013-03-02                    |           584654 |
+| 2013-03-03                    |           493312 |
+| 2013-03-04                    |           466591 |
+| 2013-03-05                    |           493815 |
+| 2013-03-06                    |           518309 |
+| 2013-03-07                    |           538316 |
+| 2013-03-08                    |           545587 |
+| 2013-03-09                    |           562200 |
+| 2013-03-10                    |           468337 |
+| 2013-03-11                    |           451483 |
+| 2013-03-12                    |           494922 |
+| 2013-03-13                    |           514843 |
+| 2013-03-14                    |           552660 |
+| 2013-03-15                    |           559360 |
+| 2013-03-16                    |           574056 |
+| 2013-03-17                    |           493734 |
+| 2013-03-18                    |           458062 |
+| 2013-03-19                    |           477028 |
+| 2013-03-20                    |           493779 |
+| 2013-03-21                    |           505003 |
+| 2013-03-22                    |           548247 |
+| 2013-03-23                    |           553332 |
+| 2013-03-24                    |           468001 |
+| 2013-03-25                    |           438928 |
+| 2013-03-26                    |           460401 |
+| 2013-03-27                    |           486853 |
+| 2013-03-28                    |           512225 |
+| 2013-03-29                    |           519004 |
+| 2013-03-30                    |           504537 |
+| 2013-03-31                    |           447157 |
+| 2013-04-01                    |           428997 |
+| 2013-04-02                    |           495549 |
+| 2013-04-03                    |           513864 |
+| 2013-04-04                    |           532590 |
+| 2013-04-05                    |           554436 |
+| 2013-04-06                    |           533177 |
+| 2013-04-07                    |           461165 |
+| 2013-04-08                    |           440520 |
+| 2013-04-09                    |           477161 |
+| 2013-04-10                    |           503211 |
+| 2013-04-11                    |           525206 |
+| 2013-04-12                    |           564860 |
+| 2013-04-13                    |           555218 |
+| 2013-04-14                    |           485706 |
+| 2013-04-15                    |           461076 |
+| 2013-04-16                    |           481130 |
+| 2013-04-17                    |           501840 |
+| 2013-04-18                    |           526055 |
+| 2013-04-19                    |           544060 |
+| 2013-04-20                    |           570929 |
+| 2013-04-21                    |           483324 |
+| 2013-04-22                    |           457622 |
+| 2013-04-23                    |           498802 |
+| 2013-04-24                    |           500551 |
+| 2013-04-25                    |           518574 |
+| 2013-04-26                    |           539015 |
+| 2013-04-27                    |           538317 |
+| 2013-04-28                    |           467900 |
+| 2013-04-29                    |           459114 |
+| 2013-04-30                    |           480499 |
++-------------------------------+------------------+
+120 rows in set (5 min 1.17 sec)
+
+
+4. Getting rows with first week data along with cleaning:
+
+CREATE TABLE nytrips_firstweek (medallion int(11), hack_license int(11), vendor_id varchar(11), rate_code int(5) , store_and_fwd_flag varchar(2) , pickup_datetime datetime, dropoff_datetime datetime, passenger_count int(5), trip_time_in_mins varchar(20), trip_distance DECIMAL(6,4), pickup_longitude varchar(15), pickup_latitude varchar(15), dropoff_longitude varchar(15),
+ dropoff_latitude varchar(15))
+select * from nydata_trips_jan
+where
+pickup_datetime > "2013-01-01 00:00:00"
+and dropoff_datetime < "2013-01-08 00:00:00"
+and pickup_datetime < dropoff_datetime
+and passenger_count <5
+and passenger_count >0
+
+and trip_distance<100
+and trip_distance>0
+
+
+First week-Total records-3010135
+After cleaning-2695778
+
+
+5. Getting dataset for Manhattan:
+
+CREATE TABLE nytrips_firstweek_manhattan (medallion int(11), hack_license int(11), vendor_id varchar(11), rate_code int(5) , store_and_fwd_flag varchar(2) , pickup_datetime datetime, dropoff_datetime datetime, passenger_count int(5), trip_time_in_mins varchar(20), trip_distance DECIMAL(6,4), pickup_longitude varchar(15), pickup_latitude varchar(15), dropoff_longitude varchar(15),
+ dropoff_latitude varchar(15))
+ 
+ select  *  from nytrips_firstweek where (
+((pickup_longitude>-74.020042 and 
+pickup_longitude<-73.971634 and 
+pickup_latitude>40.6986 and 
+pickup_latitude<40.792239 ) or
+ 
+(pickup_longitude>-73.964939 and 
+pickup_longitude<-73.916531 and 
+pickup_latitude>40.771702 and 
+pickup_latitude<40.865238 )) 
+
+and 
+
+((dropoff_longitude>-74.020042 and 
+dropoff_longitude<-73.971634 and 
+dropoff_latitude>40.6986 and  
+dropoff_latitude<40.792239) 
+or 
+(dropoff_longitude>-73.964939 and 
+dropoff_longitude<-73.916531 and 
+dropoff_latitude>40.771702 and 
+dropoff_latitude<40.865238)))
+;
+
+6. GraphHopper API call->
+curl "https://graphhopper.com/api/1/route?point=41.874856%2C-87.656141&point=41.870362%2C-87.652953&vehicle=car&locale=en&key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d&calc_points=false"
+
+
+
+Returns distance between 2 points, time to travel, route directions etc
+
+Add: &calc_points=false
+If the points for the route should not be calculated at all printing out only distance and time.
+
+API Limit:You can send up to 100 requests per minute to an end point of the GraphHopper Directions API.
+The Geocoding and Routing API, as well as GET requests against the Route Optimization API allow an exception with up to 600 requests per minute.
+Ref: https://graphhopper.com/api/1/docs/FAQ/#what-are-the-rate-limits
+https://graphhopper.com/api/1/docs/
+
+7.
+Get data for first week in a csv:
+
+SELECT * FROM
+nytrips_firstweek_manhattan
+limit 5000
+INTO OUTFILE 'C:/ProgramData/MySQL/MySQL Server 5.6/Uploads/database.csv' 
+FIELDS ENCLOSED BY '"' 
+TERMINATED BY ';' 
+ESCAPED BY '"' 
+LINES TERMINATED BY '\r\n'
+;
+
+
+8. To see number of requests coming in every minute:
+SELECT count(*) , DATE_FORMAT(pickup_datetime, '%Y-%m-%d %H:%i') FROM nytrips_firstweek_manhattan 
+group by DATE_FORMAT(pickup_datetime, '%Y-%m-%d %H:%i')
+
+or to specify minute:
+select count(*)  from nytrips_firstweek_manhattan 
+where pickup_datetime >= "2013-01-01 00:00:00"
+and pickup_datetime < "2013-01-01 00:01:00"
+;
+
+9. 
+To find dense areas in specified 5 mins..  
+
+select  count(*) as count,(TRUNCATE(pickup_longitude,2)-0.005555)  as   pickup_longitude
+, (TRUNCATE(pickup_latitude,2)+0.005555) as pickup_latitude
+from nytrips_firstweek_manhattan 
+
+where pickup_datetime >= "2013-01-01 09:00:00"
+and pickup_datetime < "2013-01-01 09:20:00"
+group by TRUNCATE(pickup_longitude,2)  
+, TRUNCATE(pickup_latitude,2)
+
+order by count desc
+limit 5;
+
+10.
+To find trips per day:
+SELECT count(*) , DATE_FORMAT(pickup_datetime, '%Y-%m-%d ') FROM nytrips_firstweek_manhattan 
+group by DATE_FORMAT(pickup_datetime, '%Y-%m-%d')
+
+Example: select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude from nytrips_firstweek_manhattan
+where pickup_datetime >= "2013-01-01 09:00:00"
+and pickup_datetime < "2013-01-01 09:02:00";
+
+
+11. script to check graphhopper api limit:
+for var in {1..1000}
+do
+echo $(date +%T) 
+curl "https://graphhopper.com/api/1/route?point=41.874856%2C-87.656141&point=41.870362%2C-87.652953&vehicle=car&locale=en&key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d"
+	echo $var
+done
+
+#####################################30
+RV Graph example
+1,2
+
+1.source, 1.dest
+2.source, 2.dest
+
+1.source 	2.source  	1.dest  2.dest    Y+B - D  <20%.D
+1.source 	2.source  	2.dest  1.dest
+2.source,	1.source,  	2.dest  1.dest
+2.source, 	1.source, 	1.dest  2.dest
+
+
+waiting time for each passenger
+travel delay for source to destination
+
+1.source 2.source :5 mins
+1.dest  2.dest: 6 mins
+
+##################################################
+
+GRAPHHOPPER API 
+---------------
+
+GraphHopper Routing API call->
+curl "https://graphhopper.com/api/1/route?point=41.874856%2C-87.656141&point=41.870362%2C-87.652953&vehicle=car&locale=en&key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d&calc_points=false"
+
+
+
+Returns distance between 2 points, time to travel, route directions etc
+
+Add: &calc_points=false
+If the points for the route should not be calculated at all printing out only distance and time.
+
+API Limit:You can send up to 100 requests per minute to an end point of the GraphHopper Directions API.
+The Geocoding and Routing API, as well as GET requests against the Route Optimization API allow an exception with up to 600 requests per minute.
+Ref: https://graphhopper.com/api/1/docs/FAQ/#what-are-the-rate-limits
+https://graphhopper.com/api/1/docs/
+
+
+Matrix API Call; https://graphhopper.com/api/1/docs/matrix/
+curl "https://graphhopper.com/api/1/matrix?point=49.932707%2C11.588051&point=50.241935%2C10.747375&point=50.118817%2C11.983337&type=json&vehicle=car&debug=true&out_array=times&out_array=distances&key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d"
+
+Batch Matrix API Call: https://graphhopper.com/api/1/docs/matrix/
+curl -X POST -H "Content-Type: application/json" "https://graphhopper.com/api/1/matrix/calculate?key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d&out_array=distances" -d '{"points":[[13.29895,52.48696],[13.370876,52.489575],[13.439026,52.511206]]}'
+
+  
+  curl -X GET "https://graphhopper.com/api/1/matrix/solution/80e08931-20f8-4fd1-bb25-95bfdd2a00ec?key=4bb8694e-ce97-4d7e-b5cc-a2ed5410f92d"
+  
+  
+##################################################
+GOOGLE DISTANCE MATRIX API
+
+one source multiple destination:
+https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.780785%2C40.780785&destinations=40.780785%2C-73.98156%7C40.795712%2C-73.950027%7C40.750641%2C-73.987137&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4
+
+
+--------------------------------------------------------
+Vehicles*Users
+y-axis-100(vehicle), x-axis-59(user)
+13 19 2 3 19 
+13 19 2 3 19 
+14 16 6 4 16 
+14 16 6 4 16 
+16 18 4 7 17 
+16 18 4 7 17 
+0 0 15 18 5 
+0 0 15 18 5 
+7 15 9 5 0 
+7 15 9 5 0 
+13 10 16 14 20 
+13 10 16 14 20 
+0 20 9 13 9 
+0 20 9 13 9 
+18 17 6 9 13 
+18 17 6 9 13 
+12 19 4 6 0 
+12 19 4 6 0 
+16 0 6 7 16 
+16 0 6 7 16 
+9 15 9 5 0 
+9 15 9 5 0 
+20 0 8 11 12 
+20 0 8 11 12 
+6 9 16 12 0 
+6 9 16 12 0 
+0 0 11 12 14 
+0 0 11 12 14 
+5 13 11 7 0 
+5 13 11 7 0 
+10 12 10 9 0 
+10 12 10 9 0 
+16 0 9 11 17 
+16 0 9 11 17 
+17 16 10 12 10 
+17 16 10 12 10 
+10 4 13 11 20 
+10 4 13 11 20 
+14 10 17 15 18 
+14 10 17 15 18 
+16 7 17 16 18 
+16 7 17 16 18 
+0 0 19 20 15 
+0 0 19 20 15 
+0 0 16 18 10 
+0 0 16 18 10 
+0 0 18 0 6 
+0 0 18 0 6 
+0 0 13 15 12 
+0 0 13 15 12 
+0 0 13 16 7 
+0 0 13 16 7 
+0 0 16 18 11 
+0 0 16 18 11 
+4 11 14 10 0 
+4 11 14 10 0 
+0 0 16 18 4 
+0 0 16 18 4 
+0 0 17 19 11 
+0 0 17 19 11 
+0 0 17 18 12 
+0 0 17 18 12 
+13 8 0 19 0 
+13 8 0 19 0 
+15 3 17 15 0 
+15 3 17 15 0 
+4 12 12 8 0 
+4 12 12 8 0 
+9 8 20 16 0 
+9 8 20 16 0 
+7 7 12 10 0 
+7 7 12 10 0 
+11 11 0 17 0 
+11 11 0 17 0 
+12 18 9 11 20 
+12 18 9 11 20 
+10 10 0 16 0 
+10 10 0 16 0 
+18 8 0 20 20 
+18 8 0 20 20 
+13 16 0 18 0 
+13 16 0 18 0 
+18 7 18 17 20 
+18 7 18 17 20 
+15 18 0 20 0 
+15 18 0 20 0 
+14 6 20 19 0 
+14 6 20 19 0 
+14 14 0 20 0 
+14 14 0 20 0 
+10 16 10 8 0 
+10 16 10 8 0 
+15 14 0 20 0 
+15 14 0 20 0 
+10 14 20 15 0 
+10 14 20 15 0 
+12 4 19 17 0 
+12 4 19 17 0 
+0 17 20 20 17 
+0 17 20 20 17
+Users*Users
+0 14 16 10 0 
+12 0 18 16 0 
+14 17 0 5 17 
+10 16 7 0 19 
+0 0 17 0 0	
+
+#################################
+Google directions api(to get time distance from source to dest)
+https://maps.googleapis.com/maps/api/directions/json?origin=40.779613%2C-73.955498&destination=40.741043%2C-73.988235&departure_time=1498374182&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4
+
+////////////////////////
+To change waiting time in program, search <=20
