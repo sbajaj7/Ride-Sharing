@@ -40,14 +40,16 @@ public class DbConnector {
 
 
 	}
-	public ArrayList<ArrayList<String>> getTripsPerInterval() throws SQLException{
+	public ArrayList<ArrayList<String>> getTripsPerInterval(String pool_size) throws SQLException{
 
 
+		int range_end=30+((Integer.parseInt(pool_size)-30)/6);
+		System.out.println("range_end "+range_end);
 		rs = stmt.executeQuery("select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude,medallion"+
 				"  from nytrips_firstweek_manhattan"+
-				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
-				" and pickup_datetime < \"2013-01-01 09:01:00\""//); 
-		+"limit 5");
+				" where pickup_datetime >= \"2013-01-01 09:01:00\""+
+				" and pickup_datetime < \"2013-01-01 09:02:00\""); 
+//		+"limit 5");
 		ResultSetMetaData rsmd = rs.getMetaData();
 		ArrayList<ArrayList<String>> trips_interval = new ArrayList<ArrayList<String>>();
 		int columnNumber=rsmd.getColumnCount();

@@ -35,7 +35,7 @@ public class AlgorithmClass {
 	}
 
 	public void initialVehicleLocationGenerator() throws SQLException{
-		/////////////To change waiting time in program, search <=20
+		/////////////To change waiting time in program, search <=8
 
 		vehicleLocations=new ArrayList<String>(vehicle_count*2);
 		ArrayList<String> denseAreas=db_obj.getDenseAreas();
@@ -115,7 +115,7 @@ public class AlgorithmClass {
 			System.out.println("time "+time);
 			if(i==index)
 				rv_requests_matrix[index][i]=-1;	
-			else if(time<=20)
+			else if(time<=8)
 			{
 				//now we also check travel delay
 
@@ -169,7 +169,7 @@ public class AlgorithmClass {
 				//
 				int time=Integer.parseInt(((String) durationObject.get("text")).replaceAll("[\\D]", ""));
 				//
-				if(time<=20)
+				if(time<=8)
 				{
 					rv_request_vehicle_matrix[j][i]=time;
 					count++;
@@ -221,7 +221,7 @@ public class AlgorithmClass {
 					for (int user2 = 0; user2 < rv_requests_matrix.length; user2++) {
 
 						if(user1!=user2 &&rv_requests_matrix[user1][user2]>=0&&(( rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2])
-								<=20))
+								<=8))
 						{
 
 							rtv_trips.put("Vehicle:"+i+",User1:"+user1+",User2:"+user2, (rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2]));
@@ -230,7 +230,7 @@ public class AlgorithmClass {
 							{
 								possible_trips_for_every_vehicle.set(i,"Vehicle:"+i+",User1:"+user1+",User2:"+user2
 										+"("+(rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2])+" mins)");	
-							
+
 							}
 							else
 							{
@@ -254,39 +254,73 @@ public class AlgorithmClass {
 				//								possible_trips_for_every_vehicle.get(i)+";vehicle"+i+"user"+j);	
 				//					}
 			}
-//			System.out.println(possible_trips_for_every_vehicle.get(i));
+			//			System.out.println(possible_trips_for_every_vehicle.get(i));
 		}
-		
-		
-//		Iterator iterator = rtv_trips.keySet().iterator();
-//		  
-//		while (iterator.hasNext()) {
-//		   String key = iterator.next().toString();
-//		   String value = rtv_trips.get(key).toString();
-//		  
-//		   System.out.println(key + " " + value);
-//		}
+
+
+		//		Iterator iterator = rtv_trips.keySet().iterator();
+		//		  
+		//		while (iterator.hasNext()) {
+		//		   String key = iterator.next().toString();
+		//		   String value = rtv_trips.get(key).toString();
+		//		  
+		//		   System.out.println(key + " " + value);
+		//		}
 		//			System.out.println(possible_trips_for_every_vehicle.get(i));
 
 	}
 
 
 	public void find_optimal_assignment(){
-		System.out.println("find_optimal_assignment");
 		sorted_rtv_trips=MapUtil.sortByValue( rtv_trips )	;	
-		
-		Iterator iterator = sorted_rtv_trips.keySet().iterator();
-		  
+
+		Iterator iterator;
+		Set<String> optimal_trips=new HashSet<String>();
+		Set<String> assigned_users=new HashSet<String>();
+		Set<String> assigned_vehicles=new HashSet<String>();
+
+		//this code for testing purpose
+		System.out.println();
+		System.out.println("All feasible rides sorted");
+		System.out.println();
+		iterator = sorted_rtv_trips.keySet().iterator();
 		while (iterator.hasNext()) {
-		   String key = iterator.next().toString();
-		   String value = sorted_rtv_trips.get(key).toString();
-		  
-		   System.out.println(key + " " + value);
+			String key = iterator.next().toString();
+			String value = sorted_rtv_trips.get(key).toString();
+			System.out.println(key + " " + value);
+		}	
+		//this code for testing purpose-- ends here
+		
+		
+		System.out.println();
+		System.out.println("Optimal Rides");
+		System.out.println();
+		iterator = sorted_rtv_trips.keySet().iterator();
+		while (iterator.hasNext()) {
+			String key = iterator.next().toString();
+			String value = sorted_rtv_trips.get(key).toString();
+
+			String[] elements=key.split(" ")[0].split(",");
+			String v=elements[0].split(":")[1];
+			String u1=elements[1].split(":")[1];
+			String u2=elements[2].split(":")[1];
+			//			System.out.println(elements[0]+" "+elements[1]+" "+elements[2]+" ");
+
+			if(!assigned_vehicles.contains(v) && !assigned_users.contains(u1) 
+					&& !assigned_users.contains(u2))
+			{
+				System.out.println(key+" "+sorted_rtv_trips.get(key));
+				optimal_trips.add(key);
+				assigned_vehicles.add(v);
+				assigned_users.add(u1);
+				assigned_users.add(u2);
+			}
+			//		   System.out.println(key + " " + value);
 		}
-	
-	
-	
-	
+
+
+		
+
 	}
 
 
