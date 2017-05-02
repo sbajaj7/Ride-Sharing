@@ -26,8 +26,8 @@ public class DbConnector {
 
 		mysqlDS = new MysqlDataSource(); 
 		mysqlDS.setURL("jdbc:mysql://localhost:3306/ridesharing");
-		mysqlDS.setUser("581User");
-		mysqlDS.setPassword("password");
+		mysqlDS.setUser("root");
+		mysqlDS.setPassword("root");
 
 		try {
 			con = mysqlDS.getConnection();
@@ -43,13 +43,18 @@ public class DbConnector {
 	public ArrayList<ArrayList<String>> getTripsPerInterval(String pool_size) throws SQLException{
 
 
-		int range_end=30+((Integer.parseInt(pool_size)-30)/6);
+		int range_end=30+((Integer.parseInt(pool_size)>30?(Integer.parseInt(pool_size)/12):0));
+
 		System.out.println("range_end "+range_end);
-		rs = stmt.executeQuery("select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude,medallion"+
+		String query="select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude,medallion"+
 				"  from nytrips_firstweek_manhattan"+
-				" where pickup_datetime >= \"2013-01-01 09:01:00\""+
-				" and pickup_datetime < \"2013-01-01 09:02:00\""); 
-//		+"limit 5");
+				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
+				" and pickup_datetime < \"2013-01-01 09:00:"+range_end+"\"";
+		//		+"limit 5");
+
+		System.out.println(query);
+		rs = stmt.executeQuery(query); 
+
 		ResultSetMetaData rsmd = rs.getMetaData();
 		ArrayList<ArrayList<String>> trips_interval = new ArrayList<ArrayList<String>>();
 		int columnNumber=rsmd.getColumnCount();
@@ -59,7 +64,7 @@ public class DbConnector {
 
 			for (int i = 1; i <= columnNumber; i++) {
 				String columnValue = rs.getString(i);
-				//				System.out.print(columnValue+"   ");
+//								System.out.print(columnValue+"   ");
 				newArray.add(i-1,columnValue);
 			}
 			trips_interval.add(index, newArray);
@@ -77,7 +82,7 @@ public class DbConnector {
 		return trips_interval;
 
 	}
-		public ArrayList<String> getDenseAreas() throws SQLException{
+	public ArrayList<String> getDenseAreas() throws SQLException{
 
 
 		rs = stmt.executeQuery("select  count(*) as count, (TRUNCATE(pickup_longitude,2)-0.005555)  as   pickup_longitude "+
@@ -96,7 +101,7 @@ public class DbConnector {
 
 		while(rs.next()){
 
-			
+
 			denseAreas.add(rs.getString(3));
 			denseAreas.add(rs.getString(2));
 		}
@@ -110,7 +115,7 @@ public class DbConnector {
 		//			}
 		//		}
 
-	return denseAreas;	
+		return denseAreas;	
 	}
 
 

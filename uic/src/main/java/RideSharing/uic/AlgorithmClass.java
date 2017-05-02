@@ -20,6 +20,7 @@ public class AlgorithmClass {
 	static Map<String, Integer> sorted_rtv_trips;
 
 	int index=0;
+	static int pool_size;
 	int count=0;
 	int vehicle_count=100;
 	ArrayList<String> vehicleLocations;
@@ -28,6 +29,9 @@ public class AlgorithmClass {
 
 	AlgorithmClass(){
 
+	}
+	AlgorithmClass(String num){
+		pool_size=Integer.parseInt(num);
 	}
 	AlgorithmClass(int size){
 		rv_requests_matrix=new int[size][size];
