@@ -14,8 +14,8 @@ import org.apache.http.client.ClientProtocolException;
 public class MainClass 
 {
 	public static void main( String[] args ) throws ClientProtocolException, SQLException, IOException, InterruptedException{
-		String delay="6";
-		String pool_size="360";
+		String delay="8";
+		String pool_size="30";
 		initiator(delay,pool_size);
 	}
 	public static void initiator( String delay, String pool_size ) throws SQLException, ClientProtocolException, IOException, InterruptedException
@@ -30,9 +30,10 @@ public class MainClass
 		ArrayList<ArrayList<String>> trips_interval = new ArrayList<ArrayList<String>>();
 
 		DbConnector db_obj=new DbConnector();
-		AlgorithmClass algorithm_obj=new AlgorithmClass(delay);
+		AlgorithmClass algorithm_obj=new AlgorithmClass(delay,pool_size);
 		ApiAdapter gh_obj=new ApiAdapter();
 
+		
 
 		algorithm_obj.initialVehicleLocationGenerator();
 

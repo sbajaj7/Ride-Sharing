@@ -40,6 +40,27 @@ public class DbConnector {
 
 
 	}
+	
+	public int getcountTripsPerInterval(String pool_size) throws SQLException{
+		int count=0;
+		int size=Integer.parseInt(pool_size);
+		String query="select count(*) "+
+				"  from nytrips_firstweek_manhattan"+
+				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
+				" and pickup_datetime < \"2013-01-01 09:0";
+				if(size>30)
+					query+=(size/60)+":00\"";
+				else
+					query+="0:30\"";
+				System.out.println(query);
+		rs = stmt.executeQuery(query); 
+		
+		while(rs.next())
+			{count=rs.getInt(1);}
+		System.out.println(count);
+		return count;
+	}
+
 	public ArrayList<ArrayList<String>> getTripsPerInterval(String pool_size) throws SQLException{
 
 
@@ -49,8 +70,8 @@ public class DbConnector {
 		String query="select medallion,pickup_datetime,pickup_longitude , pickup_latitude , dropoff_longitude , dropoff_latitude,medallion"+
 				"  from nytrips_firstweek_manhattan"+
 				" where pickup_datetime >= \"2013-01-01 09:00:00\""+
-				" and pickup_datetime < \"2013-01-01 09:00:"+range_end+"\"";
-		//		+"limit 5");
+				" and pickup_datetime < \"2013-01-01 09:00:"+range_end+"\""//;
+				+" limit 5";
 
 		System.out.println(query);
 		rs = stmt.executeQuery(query); 
@@ -95,7 +116,7 @@ public class DbConnector {
 				", TRUNCATE(pickup_latitude,2) "+
 				" "+
 				"order by count desc "+
-				"limit 50; ");
+				"limit 25; ");
 
 		ArrayList<String> denseAreas = new ArrayList<String>(5);
 

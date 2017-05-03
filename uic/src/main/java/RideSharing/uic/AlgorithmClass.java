@@ -19,19 +19,23 @@ public class AlgorithmClass {
 	static Map<String, Integer> rtv_trips;
 	static Map<String, Integer> sorted_rtv_trips;
 
+	static int total_users;
 	int index=0;
-	static int pool_size;
+	static int delay;
 	int count=0;
-	int vehicle_count=100;
+	int vehicle_count=50;
 	ArrayList<String> vehicleLocations;
 	DbConnector db_obj=new DbConnector();
 	ApiAdapter apiAdapter_obj=new ApiAdapter();
-
+	static int pool_size;
 	AlgorithmClass(){
 
 	}
-	AlgorithmClass(String num){
-		pool_size=Integer.parseInt(num);
+	AlgorithmClass(String num, String num1){
+		delay=Integer.parseInt(num);
+		pool_size=Integer.parseInt(num1);
+		
+		
 	}
 	AlgorithmClass(int size){
 		rv_requests_matrix=new int[size][size];
@@ -39,8 +43,9 @@ public class AlgorithmClass {
 	}
 
 	public void initialVehicleLocationGenerator() throws SQLException{
-		/////////////To change waiting time in program, search <=8
+		/////////////To change waiting time in program, search <=pool_size
 
+		System.out.println("delay"+delay);
 		vehicleLocations=new ArrayList<String>(vehicle_count*2);
 		ArrayList<String> denseAreas=db_obj.getDenseAreas();
 		System.out.println("denseAreas"+denseAreas);
@@ -64,7 +69,7 @@ public class AlgorithmClass {
 		String json;
 		System.out.println("source_points.size "+source_points.size());
 		requests_individual_ride_time=new int[source_points.size()/2];
-
+		total_users=source_points.size()/2;
 		for (int i = 0; i < source_points.size(); i=i+2) {
 
 			json=apiAdapter_obj.GoogleMaps_single_source_single_dest(source_points.get(i),source_points.get(i+1),
@@ -119,7 +124,7 @@ public class AlgorithmClass {
 			System.out.println("time "+time);
 			if(i==index)
 				rv_requests_matrix[index][i]=-1;	
-			else if(time<=8)
+			else if(time<=delay)
 			{
 				//now we also check travel delay
 
@@ -173,7 +178,7 @@ public class AlgorithmClass {
 				//
 				int time=Integer.parseInt(((String) durationObject.get("text")).replaceAll("[\\D]", ""));
 				//
-				if(time<=8)
+				if(time<=delay)
 				{
 					rv_request_vehicle_matrix[j][i]=time;
 					count++;
@@ -225,7 +230,7 @@ public class AlgorithmClass {
 					for (int user2 = 0; user2 < rv_requests_matrix.length; user2++) {
 
 						if(user1!=user2 &&rv_requests_matrix[user1][user2]>=0&&(( rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2])
-								<=8))
+								<=delay))
 						{
 
 							rtv_trips.put("Vehicle:"+i+",User1:"+user1+",User2:"+user2, (rv_request_vehicle_matrix[i][user1]+rv_requests_matrix[user1][user2]));
@@ -275,7 +280,7 @@ public class AlgorithmClass {
 	}
 
 
-	public void find_optimal_assignment(){
+	public void find_optimal_assignment() throws SQLException{
 		sorted_rtv_trips=MapUtil.sortByValue( rtv_trips )	;	
 
 		Iterator iterator;
@@ -321,7 +326,19 @@ public class AlgorithmClass {
 			}
 			//		   System.out.println(key + " " + value);
 		}
-
+		
+		int shareability_percentage=(optimal_trips.size()*2*100/total_users);
+		
+		System.out.println("Shareability percentage: "+shareability_percentage+"%");
+		
+		
+		System.out.println(pool_size);
+		String input_pool_size=""+pool_size;
+		pool_size=db_obj.getcountTripsPerInterval(input_pool_size);
+		
+		System.out.println("Total Users: "+pool_size);
+		System.out.println("Users pooled together(total): "+shareability_percentage*pool_size/100);
+		
 
 		
 

@@ -19,6 +19,8 @@ public class ApiAdapter {
 	HttpResponse httpResponse;
 	HttpEntity entity ;
 	ArrayList<String> vehicle_req_json=new ArrayList<String>();
+	static String api_key="AIzaSyCqkjP6_q2fp2VMOGZ_jji-DuP5y37YoPQ";;
+
 	
 	public String RoutingAPI(String point1_lat,String point1_long,String point2_lat,String point2_long) throws ClientProtocolException, IOException{
 		request = new HttpGet( "https://graphhopper.com/api/1/route?point="+
@@ -110,7 +112,7 @@ public class ApiAdapter {
 		
 		request = new HttpGet( "https://maps.googleapis.com/maps/api/directions/json?origin="+
 				point1_lat+"%2C"+point1_long+ "&destination="+
-				point2_lat+"%2C"+point2_long+"&departure_time=1498374182&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4"  );		
+				point2_lat+"%2C"+point2_long+"&departure_time=1498374182&key="+api_key)  ;		
 
 		httpResponse = HttpClientBuilder.create().build().execute( request );
 		entity = httpResponse.getEntity();
@@ -148,9 +150,9 @@ public class ApiAdapter {
 
 			//destination
 			api_request+=all_points;
-			api_request+="&departure_time=1498374182&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4";
+			api_request+="&departure_time=1498374182&key="+api_key  ;
 			System.out.println(api_request);
-			System.out.println("///////////////EXECUTION NUMBER "+i);
+			System.out.println("+++++++++++++++++EXECUTION NUMBER "+i);
 
 
 			HttpUriRequest request = new HttpGet( api_request );		
@@ -197,7 +199,8 @@ public class ApiAdapter {
 
 		//destination
 		api_request+=all_vehicle_points;
-		api_request+="&departure_time=1498374182&key=AIzaSyAwsg9mLuI2ddpqk_eoIaxJdQScAVE0Uq4";
+		api_request+="&departure_time=1498374182&key="+api_key  ;
+		System.out.println(api_request);
 		System.out.println("///////////////EXECUTION NUMBER "+i);
 
 		HttpUriRequest request = new HttpGet( api_request );		
