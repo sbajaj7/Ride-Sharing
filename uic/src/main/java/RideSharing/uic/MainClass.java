@@ -15,7 +15,7 @@ public class MainClass
 {
 	public static void main( String[] args ) throws ClientProtocolException, SQLException, IOException, InterruptedException{
 		String delay="8";
-		String pool_size="30";
+		String pool_size="44";
 		System.out.println(initiator(delay,pool_size));
 	}
 	public static String initiator( String delay, String pool_size ) throws SQLException, ClientProtocolException, IOException, InterruptedException
