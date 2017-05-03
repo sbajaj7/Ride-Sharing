@@ -280,7 +280,9 @@ public class AlgorithmClass {
 	}
 
 
-	public void find_optimal_assignment() throws SQLException{
+	public String find_optimal_assignment() throws SQLException{
+		int shareability_percentage=74;
+		
 		sorted_rtv_trips=MapUtil.sortByValue( rtv_trips )	;	
 
 		Iterator iterator;
@@ -327,7 +329,8 @@ public class AlgorithmClass {
 			//		   System.out.println(key + " " + value);
 		}
 		
-		int shareability_percentage=(optimal_trips.size()*2*100/total_users);
+		
+		shareability_percentage=(optimal_trips.size()*2*100/total_users);
 		
 		System.out.println("Shareability percentage: "+shareability_percentage+"%");
 		
@@ -339,7 +342,8 @@ public class AlgorithmClass {
 		System.out.println("Total Users: "+pool_size);
 		System.out.println("Users pooled together(total): "+shareability_percentage*pool_size/100);
 		
-
+		return ("Shareability percentage: "+shareability_percentage+"%, "
+				+"Total Users: "+pool_size+", "+("Users pooled together(total): "+shareability_percentage*pool_size/100));
 		
 
 	}

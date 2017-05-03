@@ -16,9 +16,9 @@ public class MainClass
 	public static void main( String[] args ) throws ClientProtocolException, SQLException, IOException, InterruptedException{
 		String delay="8";
 		String pool_size="30";
-		initiator(delay,pool_size);
+		System.out.println(initiator(delay,pool_size));
 	}
-	public static void initiator( String delay, String pool_size ) throws SQLException, ClientProtocolException, IOException, InterruptedException
+	public static String initiator( String delay, String pool_size ) throws SQLException, ClientProtocolException, IOException, InterruptedException
 	{
 
 //		System.out.println(args[0]+" "+args[1]);
@@ -69,8 +69,7 @@ public class MainClass
 		algorithm_obj.RVGraphPart2(source_points);
 
 		algorithm_obj.RTVGraph();
-		algorithm_obj.find_optimal_assignment();
-		System.out.println(new Date().toString());
+		return(algorithm_obj.find_optimal_assignment());
 
 
 	}
