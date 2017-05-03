@@ -26,3 +26,17 @@ The problem is solved via four steps:
 <li>Rebalancing the remaining idle vehicles.</li>
 </ul>
 </p>
+
+-------------------------------------------------------------------------------------------------
+Steps to Run the Project:
+
+1. Clone the repo in Eclipse or any other IDE as a Maven Project.
+2. You might need to install Maven and a git plugin.
+3. All jar dependencies will be automatically resolved as they are mentioned in the pom.xml file.
+4. To run the algorithm through the UI: Run the MainWindow.java as a Java Application. 
+    * This will open a window with the user allowed to enter the travel delay time as well as pool size. 
+    * Waiting time is kept as constant and not taken by the user as it causes efficiency issues for the algorithm.
+    * Once the user has selected the values, hit the submit button. This will start the algorithm, and once completed, the shareability percentage as well as total requests and shared requests will be displayed.
+    * Additionally, a graph is displayed depicting how the shareability changes with respect to the delay constraint.
+5. To run the algorithm through the back end program directly: Run the MainClass.java file, and the travel delay and pool size values can be entered as arguments inside the method call in this main method. 
+ 
