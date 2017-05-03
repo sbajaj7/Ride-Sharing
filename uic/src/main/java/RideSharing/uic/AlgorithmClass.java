@@ -281,7 +281,7 @@ public class AlgorithmClass {
 
 
 	public String find_optimal_assignment() throws SQLException{
-		int shareability_percentage=74;
+		int shareability_percentage=0;
 		
 		sorted_rtv_trips=MapUtil.sortByValue( rtv_trips )	;	
 
