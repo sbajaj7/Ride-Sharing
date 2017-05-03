@@ -40,6 +40,18 @@
     <version>20141113</version>
 </dependency>
 
+<dependency>
+    <groupId>org.knowm.xchart</groupId>
+    <artifactId>xchart-demo</artifactId>
+    <version>3.3.0</version>
+</dependency>
+
+<!-- https://mvnrepository.com/artifact/org.knowm.xchart/xchart -->
+<dependency>
+    <groupId>org.knowm.xchart</groupId>
+    <artifactId>xchart</artifactId>
+    <version>3.3.0</version>
+</dependency>
 
 		
 
