@@ -39,4 +39,13 @@ Steps to Run the Project:
     * Once the user has selected the values, hit the submit button. This will start the algorithm, and once completed, the shareability percentage as well as total requests and shared requests will be displayed.
     * Additionally, a graph is displayed depicting how the shareability changes with respect to the delay constraint.
 5. To run the algorithm through the back end program directly: Run the MainClass.java file, and the travel delay and pool size values can be entered as arguments inside the method call in this main method. 
+
+-------------------------------------------------------------------------------------------------
+References:
+
+* https://graphhopper.com/api
+* https://maps.googleapis.com
+* http://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values-java
+* https://www.stackflow.com
+* http://www.pnas.org/content/114/3/462.full.pdf 
  
