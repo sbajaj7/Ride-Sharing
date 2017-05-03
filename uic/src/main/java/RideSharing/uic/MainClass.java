@@ -14,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 public class MainClass 
 {
 	public static void main( String[] args ) throws ClientProtocolException, SQLException, IOException, InterruptedException{
+		//below values are for testing purpose only
 		String delay="8";
 		String pool_size="44";
 		System.out.println(initiator(delay,pool_size));
